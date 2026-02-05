@@ -14,12 +14,12 @@
         flota[0] = auto1;
         flota[1] = auto2;
 
-        Petla(flota);
+        Menu(flota);
     }
-    public static void Petla(Samochod[] flota)
+    public static void Menu(Samochod[] flota)
     {            
         int wybor = -1;
-        while (wybor < 0 || wybor > 2)
+        while (wybor != 0)
         {
             Console.WriteLine("\n=====MENU=====");
             Console.WriteLine("1 – Jedź");
@@ -29,15 +29,13 @@
 
 
 
-            if (!int.TryParse(Console.ReadLine(), out wybor) || (wybor < 0 || wybor > 2))
+            while (!int.TryParse(Console.ReadLine(), out wybor) || (wybor < 0 || wybor > 2))
             {
                 Console.WriteLine("Nieprawidlowy wybor. Podaj 0, 1 lub 2.");
                 wybor = -1;
+
             }
-
             if (wybor == 0) break;
-        }
-
 
             int nr = 0;
             while (nr != 1 && nr != 2)
@@ -68,7 +66,7 @@
                 wybrane.WypiszDane(nr);
             }
 
-
+        }
     }
 public class Samochod
 {
