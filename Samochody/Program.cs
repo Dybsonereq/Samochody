@@ -1,22 +1,54 @@
-﻿class Program
+﻿
+class Program
 {
     public static void Main(string[] args)
     {
-        Samochod auto1 = new Samochod();
-        Samochod auto2 = new Samochod();
-        auto1.PobierzDane();
-        auto2.PobierzDane();
+        List<Samochod> flota = new List<Samochod>();
 
-        auto1.WypiszDane(1);
-        auto2.WypiszDane(2);
+        Console.WriteLine("Dodawanie samochodu nr1:");
+        flota.Add(StworzSamochod());
 
-        Samochod[] flota = new Samochod[2];
-        flota[0] = auto1;
-        flota[1] = auto2;
+        Console.WriteLine("Dodawanie samochodu nr2:");
+        flota.Add(StworzSamochod());
 
         Menu(flota);
     }
-    public static void Menu(Samochod[] flota)
+    public static Samochod StworzSamochod()
+    {
+        Console.WriteLine("Podaj marke");
+        string marka = Console.ReadLine();
+        Console.WriteLine("Podaj model");
+        string model = Console.ReadLine();
+        int przebieg;
+        Console.Write("Podaj przebieg: ");
+        while (!int.TryParse(Console.ReadLine(), out przebieg) || przebieg <= 0)
+        {
+            Console.WriteLine("Błąd! Podaj liczbę");
+        }
+        return new Samochod(marka, model, przebieg);
+    }    
+    public static int Wybor()
+    {
+        int nr = 0;
+        while (nr != 1 && nr != 2)
+        {
+            Console.WriteLine("Wybierz samochód (1 albo 2)");
+            if (!int.TryParse(Console.ReadLine(), out nr))
+            {
+                Console.WriteLine("To nie jest liczba!");
+            }
+            
+        }return nr;
+    }
+    public static void WypiszDane(Samochod auto, int nr)
+    {
+        Console.WriteLine($"\nDane samochodu nr {nr}:");
+        Console.WriteLine($"\nMarka samochodu to {auto.marka}");
+        Console.WriteLine($"Model samochodu to {auto.model}");
+        Console.WriteLine($"Przebieg samochodu to {auto.przebieg}");
+        Console.WriteLine($"Alerty: {auto.alert}");
+    }
+    public static void Menu(List<Samochod> flota)
     {            
         int wybor = -1;
         while (wybor != 0)
@@ -25,6 +57,7 @@
             Console.WriteLine("1 – Jedź");
             Console.WriteLine("2 – Wyswietl dane samochodu");
             Console.WriteLine("0 – Wyjście");
+
             Console.WriteLine("Wprowadz odpowiednią liczbe");
 
 
@@ -37,75 +70,63 @@
             }
             if (wybor == 0) break;
 
-            int nr = 0;
-            while (nr != 1 && nr != 2)
-            {
-                Console.WriteLine("Wybierz samochód (1 albo 2)");
-                if (!int.TryParse(Console.ReadLine(), out nr))
-                {
-                    Console.WriteLine("To nie jest liczba!");
-                }
-            }
-
+            int nr = Wybor();
             Samochod wybrane = flota[nr - 1];
 
             int km = 0;
             if (wybor == 1)
             {
                 Console.WriteLine("Ile kilometrów");
-                while (!int.TryParse(Console.ReadLine(), out km))
+                while (!int.TryParse(Console.ReadLine(), out km) || km <= 0)
                 {
                     Console.WriteLine("Niepoprawna liczba. Podaj jeszcze raz.");
                     continue;
                 }
+                
                 wybrane.Jedz(km);
             }
 
-            if (wybor == 2)
+            else if (wybor == 2)
             {
-                wybrane.WypiszDane(nr);
+                WypiszDane(wybrane, nr);
             }
 
         }
     }
 public class Samochod
 {
-    public Samochod()
-    {
-        
-    }
-    public string marka;
-    public string model;
-    public int przebieg;
+        private string marka1;
+        private string model1;
+        private int przebieg1;
+        private string alert1 = "";
 
-
-    public void PobierzDane()
-    {
-        Console.WriteLine("Podaj marke samochodu.");
-        marka = Console.ReadLine();
-        Console.WriteLine("Podaj model samochodu.");
-        model = Console.ReadLine();
-        Console.WriteLine("Podaj przebieg samochodu.");
-        while (!int.TryParse(Console.ReadLine(), out przebieg))
+        public string marka => marka1;
+        public string model => model1;
+        public int przebieg => przebieg1;
+        public string alert => alert1;
+        public Samochod(string marka, string model, int przebieg)
+        {
+            marka1 = marka;
+            model1 = model;
+            przebieg1 = przebieg;
+            alert1 = alert;
+        }
+        public void Jedz(int dystans)
+        {
+            int stareDane = przebieg1 / 10000;
+            przebieg1 += dystans;
+            int noweDane = przebieg / 10000;
+            if (noweDane > stareDane)
             {
-            Console.WriteLine("Niepoprawny przebieg. Podaj jeszcze raz.");
-            continue;
+                DodajAlert("WYMAGANY PRZEGLĄD! ");
             }
-        ;
-    }
-    public void WypiszDane(int liczba)
-    {
-        Console.WriteLine($"\nDane samochodu nr {liczba}:");
-        Console.WriteLine($"\nMarka samochodu to {marka}");
-        Console.WriteLine($"Model samochodu to {model}");
-        Console.WriteLine($"Przebieg samochodu to {przebieg}");
-    }
+        }
 
-    public void Jedz(int dystans)
+            private void DodajAlert(string komunikat)
     {
-        przebieg += dystans;
-        Console.WriteLine($"Samochod {marka} {model} przejechał {dystans} km");
-    }
-
+        {
+            alert1 += komunikat;
+        }
     }
 }
+    }
