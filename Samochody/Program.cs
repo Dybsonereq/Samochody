@@ -1,44 +1,37 @@
-﻿
+using System;
 class Program
 {
     public static void Main(string[] args)
     {
         List<Samochod> flota = new List<Samochod>();
 
-        Console.WriteLine("Dodawanie samochodu nr1:");
-        flota.Add(StworzSamochod());
-
-        Console.WriteLine("Dodawanie samochodu nr2:");
-        flota.Add(StworzSamochod());
-
         Menu(flota);
     }
     public static Samochod StworzSamochod()
     {
-        Console.WriteLine("Podaj marke");
-        string marka = Console.ReadLine();
-        Console.WriteLine("Podaj model");
-        string model = Console.ReadLine();
-        int przebieg;
-        Console.Write("Podaj przebieg: ");
-        while (!int.TryParse(Console.ReadLine(), out przebieg) || przebieg <= 0)
-        {
-            Console.WriteLine("Błąd! Podaj liczbę");
+        Console.WriteLine("Dodawanie samochodu...");
+        string marka = "";
+        string model = "";
+        while (marka == ""){
+            Console.WriteLine("Podaj marke");
+            marka = Console.ReadLine();
+
         }
+        while (model == "")
+        {
+            Console.WriteLine("Podaj marke");
+            model = Console.ReadLine();
+        }
+
+        int przebieg = WczytajLiczbe("Podaj przebieg", 0);
+
         return new Samochod(marka, model, przebieg);
     }    
-    public static int Wybor()
+    public static int Wybor(List<Samochod> flota)
     {
-        int nr = 0;
-        while (nr != 1 && nr != 2)
-        {
-            Console.WriteLine("Wybierz samochód (1 albo 2)");
-            if (!int.TryParse(Console.ReadLine(), out nr))
-            {
-                Console.WriteLine("To nie jest liczba!");
-            }
-            
-        }return nr;
+        if (flota.Count == 0) return -1;
+        return WczytajLiczbe("Wybierz numer samochodu", 1, flota.Count);
+
     }
     public static void WypiszDane(Samochod auto, int nr)
     {
@@ -48,73 +41,92 @@ class Program
         Console.WriteLine($"Przebieg samochodu to {auto.przebieg}");
         Console.WriteLine($"Alerty: {auto.alert}");
     }
+    public static int WczytajLiczbe(string prompt, int min = int.MinValue, int max = int.MaxValue)
+    {
+        int wynik;
+        while (true)
+        {
+            Console.Write($"{prompt}: ");
+            if (int.TryParse(Console.ReadLine(), out wynik) && wynik >= min && wynik <= max)
+            {
+                return wynik;
+            }
+            Console.WriteLine($"Błąd! Podaj poprawną liczbę.");
+        }
+    }
     public static void Menu(List<Samochod> flota)
     {            
         int wybor = -1;
         while (wybor != 0)
         {
             Console.WriteLine("\n=====MENU=====");
-            Console.WriteLine("1 – Jedź");
+            Console.WriteLine("1 – Dodaj samochód");
             Console.WriteLine("2 – Wyswietl dane samochodu");
+            Console.WriteLine("3 - Jedź");
             Console.WriteLine("0 – Wyjście");
 
-            Console.WriteLine("Wprowadz odpowiednią liczbe");
 
+            wybor = WczytajLiczbe("Wybierz opcję", 0, 3);
 
-
-            while (!int.TryParse(Console.ReadLine(), out wybor) || (wybor < 0 || wybor > 2))
-            {
-                Console.WriteLine("Nieprawidlowy wybor. Podaj 0, 1 lub 2.");
-                wybor = -1;
-
-            }
+           
             if (wybor == 0) break;
 
-            int nr = Wybor();
-            Samochod wybrane = flota[nr - 1];
-
-            int km = 0;
             if (wybor == 1)
             {
-                Console.WriteLine("Ile kilometrów");
-                while (!int.TryParse(Console.ReadLine(), out km) || km <= 0)
-                {
-                    Console.WriteLine("Niepoprawna liczba. Podaj jeszcze raz.");
-                    continue;
-                }
-                
-                wybrane.Jedz(km);
+                flota.Add(StworzSamochod());
             }
+            if (wybor == 3)
+                if (flota.Count == 0)
+                {
+                    Console.WriteLine("Flota jest pusta. Najpierw dodaj samochod");
+                }
+                else
+                {
+                    int nr = Wybor(flota);
+                    Samochod wybrane = flota[nr - 1];
+                    int km = 0;
+                    km = WczytajLiczbe("Ile kilometrów?", 0);
+
+                    wybrane.Jedz(km);
+                }
 
             else if (wybor == 2)
             {
-                WypiszDane(wybrane, nr);
+                if (flota.Count == 0)
+                {
+                    Console.WriteLine("Flota jest pusta. Najpierw dodaj samochod");
+                }
+                else
+                {
+                    int nr = Wybor(flota);
+                    Samochod wybrane = flota[nr - 1];
+                    WypiszDane(wybrane, nr);
+                }
             }
-
         }
     }
 public class Samochod
 {
-        private string marka1;
-        private string model1;
-        private int przebieg1;
-        private string alert1 = "";
+        private string _marka;
+        private string _model;
+        private int _przebieg;
+        private string _alert = "";
 
-        public string marka => marka1;
-        public string model => model1;
-        public int przebieg => przebieg1;
-        public string alert => alert1;
+        public string marka => _marka;
+        public string model => _model;
+        public int przebieg => _przebieg;
+        public string alert => _alert;
         public Samochod(string marka, string model, int przebieg)
         {
-            marka1 = marka;
-            model1 = model;
-            przebieg1 = przebieg;
-            alert1 = alert;
+            _marka = marka;
+            _model = model;
+            _przebieg = przebieg;
+            _alert = alert;
         }
         public void Jedz(int dystans)
         {
-            int stareDane = przebieg1 / 10000;
-            przebieg1 += dystans;
+            int stareDane = _przebieg / 10000;
+            _przebieg += dystans;
             int noweDane = przebieg / 10000;
             if (noweDane > stareDane)
             {
@@ -125,7 +137,7 @@ public class Samochod
             private void DodajAlert(string komunikat)
     {
         {
-            alert1 += komunikat;
+            _alert += komunikat;
         }
     }
 }
