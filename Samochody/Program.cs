@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿using System;
+=======
+using System;
+>>>>>>> 12247ab1f3265678af14e78e4be8dde83279622a
 class Program
 {
     public static void Main(string[] args)
@@ -12,12 +16,12 @@ class Program
         Console.WriteLine("Dodawanie samochodu...");
         string marka = "";
         string model = "";
-        while (marka == ""){
+        while (string.IsNullOrWhiteSpace(marka)){
             Console.WriteLine("Podaj marke");
             marka = Console.ReadLine();
 
         }
-        while (model == "")
+        while (string.IsNullOrWhiteSpace(model))
         {
             Console.WriteLine("Podaj marke");
             model = Console.ReadLine();
@@ -121,13 +125,12 @@ public class Samochod
             _marka = marka;
             _model = model;
             _przebieg = przebieg;
-            _alert = alert;
         }
         public void Jedz(int dystans)
         {
             int stareDane = _przebieg / 10000;
             _przebieg += dystans;
-            int noweDane = przebieg / 10000;
+            int noweDane = _przebieg / 10000;
             if (noweDane > stareDane)
             {
                 DodajAlert("WYMAGANY PRZEGLĄD! ");
