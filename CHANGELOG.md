@@ -1,3 +1,11 @@
+2026-02-22 - v1.0.1 - Changelog dla Program.cs:1-144
+
+• Poprawiono konstruktor
+
+• Poprawiono walidacje tekstu
+
+• Poprawiono błędy związane z danymi wejściowymi
+
 2026-02-11 — v1.0.0 — Changelog dla Program.cs:1-144
 
 Krótki opis
