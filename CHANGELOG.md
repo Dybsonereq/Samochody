@@ -1,4 +1,5 @@
 2026-02-11 — v1.0.0 — Changelog dla Program.cs:1-144
+
 Krótki opis
 •	Zmiany poprawiają skalowalność, walidację wejścia, enkapsulację i logikę biznesową programu zarządzającego flotą samochodów.
 Główne zmiany (zwięźle)
