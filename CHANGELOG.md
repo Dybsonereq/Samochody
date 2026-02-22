@@ -4,6 +4,7 @@ Krótki opis
 
 •	Zmiany poprawiają skalowalność, walidację wejścia, enkapsulację i logikę biznesową programu zarządzającego flotą samochodów.
 
+
 Główne zmiany (zwięźle)
 
 •	Samochod[2] → List<Samochod> — dynamiczne dodawanie dowolnej liczby pojazdów (flota).
@@ -15,6 +16,7 @@ Główne zmiany (zwięźle)
 •	Właściwości tylko do odczytu — expression-bodied (public string marka => _marka;).
 
 •	Sprawdzenie stanu floty (flota.Count == 0) przed operacjami które indeksują listę — zapobiega IndexOutOfRange.
+
 
 Pliki zmodyfikowane / rekomendowane
 
