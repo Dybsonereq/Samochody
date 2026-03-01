@@ -23,7 +23,7 @@ class Program
         }
         while (string.IsNullOrWhiteSpace(model))
         {
-            Console.WriteLine("Podaj marke");
+            Console.WriteLine("Podaj model");
             model = Console.ReadLine();
         }
 
