@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-﻿using System;
-=======
+
 using System;
->>>>>>> 12247ab1f3265678af14e78e4be8dde83279622a
 class Program
 {
     public static void Main(string[] args)
